@@ -2,9 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<p th:text = "'Welcome to TWAirline'"/>
+<p th:text="'Welcome to TWAirline'"/>
+
+<form action="search" method="get">
+
+    <p th:text="'Source'"></p>
+    <select name="fromCityId">
+        <!-- <option value="DEFAULT">Select Source</option>-->
+        <option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name}"/>
+    </select>
+
+
+    <p th:text="'Destination'"></p>
+    <select name="toCityId">
+        <!-- <option value="DEFAULT">Select Destination</option>-->
+        <option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name}"/>
+    </select>
+
+
+    <input type="submit" value="Search"/>
+</form>
+
 </body>
 </html>

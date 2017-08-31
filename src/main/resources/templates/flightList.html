@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+</head>
+
+<body>
+<table>
+    <caption>SEARCH FLIGHT LIST</caption>
+    <tr>
+        <td>Flight No</td>
+        <td>Source</td>
+        <td>Destination</td>
+
+    </tr>
+<th:block th:each="flight : ${flights}">
+    <tr>
+        <td th:text="${flight.flightNo}"/>
+        <td th:text="${flight.sourceCityId}"/>
+        <td th:text="${flight.destinationCityId}"/>
+    </tr>
+</th:block>
+    </table>
+</body>
+</html>
