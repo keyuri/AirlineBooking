@@ -1,9 +1,10 @@
 package airline.services;
 
-import airline.DataSource;
+import airline.datasource.FlightsDS;
+import airline.datasource.LocationDS;
 import airline.model.FlightInformation;
+import airline.model.SearchCriteria;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +13,15 @@ import java.util.List;
  */
 public class SearchFlightService {
 
-    public List<FlightInformation> searchFlights(String sourceCityId, String destinationCityId) {
-        List<FlightInformation> FlightInfo = DataSource.getAllFlights();
+    public List<FlightInformation> searchFlights(SearchCriteria filter) {
+        List<FlightInformation> allFlights = FlightsDS.getAllFlights();
         List<FlightInformation> selectedFlights = new ArrayList<FlightInformation>();
-        for (int i = 0; i < FlightInfo.size(); i++) {
-            FlightInformation flight = FlightInfo.get(i);
-            if (sourceCityId.equalsIgnoreCase(flight.getSourceCityId()) &&
-                    destinationCityId.equalsIgnoreCase(flight.getDestinationCityId())) {
+
+        for(FlightInformation flight : allFlights){
+
+            if (flight.getSourceCityId().equalsIgnoreCase(filter.getSourceCityId()) &&
+                    flight.getDestinationCityId().equalsIgnoreCase(filter.getDestCityId())
+                    && flight.areSeatsAvailable(filter.getNoOfTravellers())) {
                 selectedFlights.add(flight);
             }
         }

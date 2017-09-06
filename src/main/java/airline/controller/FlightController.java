@@ -1,13 +1,16 @@
 package airline.controller;
 
-import airline.DataSource;
+import airline.datasource.LocationDS;
 import airline.model.FlightInformation;
+import airline.model.SearchCriteria;
 import airline.services.SearchFlightService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -18,10 +21,7 @@ import java.util.List;
 @SpringBootApplication
 public class FlightController {
 
-    // @Autowired
-    // private SearchFlightService searchFlightService;
-
-    public static void main(String[] args) {
+     public static void main(String[] args) {
         SpringApplication.run(FlightController.class, args);
     }
 
@@ -31,18 +31,17 @@ public class FlightController {
     }
 */
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String searchFlights(@RequestParam("fromCityId") String fromCityId,
-                                @RequestParam("toCityId") String toCityId,
-                                Model model) {
-        List<FlightInformation> flights = new SearchFlightService().searchFlights(fromCityId.toUpperCase().trim(), toCityId.toUpperCase().trim());
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public String searchFlights(@ModelAttribute("searchCriteria") SearchCriteria searchCriteria, Model model) {
+        List<FlightInformation> flights = new SearchFlightService().searchFlights(searchCriteria);
         model.addAttribute("flights", flights);
         return "flightList";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getLocations(Model model) {
-        model.addAttribute("cityList", DataSource.getLocations());
+        model.addAttribute("cityList", LocationDS.getLocations());
+        model.addAttribute("searchCriteria", new SearchCriteria());
         return "flightSearch";
     }
 }

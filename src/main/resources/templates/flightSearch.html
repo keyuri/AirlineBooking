@@ -7,20 +7,23 @@
 <body>
 <p th:text="'Welcome to TWAirline'"/>
 
-<form action="search" method="get">
+<form th:action="@{/search}" th:object="${searchCriteria}" method="post">
 
     <p th:text="'Source'"></p>
-    <select name="fromCityId">
+    <select th:field="*{sourceCityId}" name="sourceCityId" id="sourceCityId">
         <!-- <option value="DEFAULT">Select Source</option>-->
         <option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name}"/>
     </select>
 
 
     <p th:text="'Destination'"></p>
-    <select name="toCityId">
+    <select th:field="*{destCityId}" name="destCityId" id="destCityId">
         <!-- <option value="DEFAULT">Select Destination</option>-->
         <option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name}"/>
     </select>
+
+    <p th:text="'No Of Travellers'"></p>
+    <input th:field="*{noOfTravellers}" type="number" min="1" />
 
 
     <input type="submit" value="Search"/>

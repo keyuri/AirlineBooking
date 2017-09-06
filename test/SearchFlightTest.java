@@ -1,4 +1,5 @@
 import airline.model.FlightInformation;
+import airline.model.SearchCriteria;
 import airline.services.SearchFlightService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,7 +13,10 @@ public class SearchFlightTest {
     @Test
     public void testFlightsForSourcetoDestionation(){
         SearchFlightService service = new SearchFlightService();
-        List<FlightInformation> selectedFlights = service.searchFlights("DEL","BOM");
+        SearchCriteria filter = new SearchCriteria();
+        filter.setSourceCityId("DEL");
+        filter.setDestCityId("BOM");
+        List<FlightInformation> selectedFlights = service.searchFlights(filter);
         Assert.assertEquals(1,selectedFlights.size());
 
     }
