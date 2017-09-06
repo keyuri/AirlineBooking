@@ -19,8 +19,8 @@ public class SearchFlightService {
 
         for(FlightInformation flight : allFlights){
 
-            if (flight.getSourceCityId().equalsIgnoreCase(filter.getSourceCityId()) &&
-                    flight.getDestinationCityId().equalsIgnoreCase(filter.getDestCityId())
+            if (flight.getSourceCityId().equalsIgnoreCase(filter.getSource()) &&
+                    flight.getDestinationCityId().equalsIgnoreCase(filter.getDestination())
                     && flight.areSeatsAvailable(filter.getNoOfTravellers())) {
                 selectedFlights.add(flight);
             }

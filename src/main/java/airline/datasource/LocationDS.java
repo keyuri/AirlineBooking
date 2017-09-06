@@ -1,12 +1,7 @@
 package airline.datasource;
 
-import airline.model.FlightInformation;
 import airline.model.Location;
-import com.opencsv.CSVReader;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -17,12 +12,14 @@ import java.util.Properties;
  */
 public class LocationDS {
 
-    public static List<Location> locationList;
-    public static List<FlightInformation> flightList;
+    private static List<Location> locationList = null;
 
     public static List<Location> getLocations() {
 
-        List<Location> locationList = new ArrayList<Location>();
+        if(locationList != null)
+            return locationList;
+
+        locationList = new ArrayList<Location>();
         try {
             Properties locations = new Properties();
             locations.load(LocationDS.class.getResourceAsStream("/locations.properties"));
@@ -40,4 +37,14 @@ public class LocationDS {
     }
 
 
+    public static Location getLocation(String cityId) {
+            if(locationList == null)
+                getLocations();
+
+        for(Location location : locationList){
+            if(location.getId().equalsIgnoreCase(cityId)) return location;
+        }
+
+        return null;
+    }
 }

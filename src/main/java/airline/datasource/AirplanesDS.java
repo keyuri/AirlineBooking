@@ -14,21 +14,24 @@ import java.util.List;
  */
 public class AirplanesDS {
 
+    private static List<Airplane> airplaneList = null;
+
     public static List<Airplane> getAllPlanes() {
 
+        if (airplaneList == null) {
+            airplaneList = new ArrayList<Airplane>();
 
-        List<Airplane> airplaneList = new ArrayList<Airplane>();
+            try {
+                URL url = LocationDS.class.getResource("/planesDB.csv");
+                CSVReader reader = new CSVReader(new FileReader(url.getFile()));
+                String[] line;
+                while ((line = reader.readNext()) != null) {
+                    airplaneList.add(new Airplane(line[0], line[1], Integer.parseInt(line[2])));
 
-        try {
-            URL url = LocationDS.class.getResource("/planesDB.csv");
-            CSVReader reader = new CSVReader(new FileReader(url.getFile()));
-            String[] line;
-            while ((line = reader.readNext()) != null) {
-                airplaneList.add(new Airplane(line[0], line[1], Integer.parseInt(line[2])));
-
+                }
+            } catch (IOException e) {
+                generateDummyData(airplaneList);
             }
-        } catch (IOException e) {
-            generateDummyData(airplaneList);
         }
 
         return airplaneList;
