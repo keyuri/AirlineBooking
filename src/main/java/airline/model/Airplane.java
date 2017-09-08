@@ -45,4 +45,8 @@ public class Airplane {
         return travelClassMap.get(travelClass).getAvailableSeats() >= noOfRequestedSeats;
 
     }
+
+    public double getBasePriceForClass(TravelClassType travelClass) {
+        return travelClassMap.get(travelClass).getBasePrice();
+    }
 }

@@ -1,5 +1,5 @@
 import airline.model.FlightInformation;
-import airline.model.SearchCriteria;
+import airline.view.SearchFlightCriteria;
 import airline.services.SearchFlightService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,7 +13,7 @@ public class SearchFlightTest {
     @Test
     public void testFlightsForSourcetoDestination() {
         SearchFlightService service = new SearchFlightService();
-        SearchCriteria filter = new SearchCriteria();
+        SearchFlightCriteria filter = new SearchFlightCriteria();
         filter.setSourceId("DEL");
         filter.setDestinationId("BOM");
         List<FlightInformation> selectedFlights = service.searchFlights(filter);

@@ -3,8 +3,9 @@ package airline.services;
 import airline.StringUtils;
 import airline.datasource.FlightsDS;
 import airline.model.FlightInformation;
-import airline.model.SearchCriteria;
 import airline.model.TravelClassType;
+import airline.view.FlightPrice;
+import airline.view.SearchFlightCriteria;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class SearchFlightService {
 
-    public List<FlightInformation> searchFlights(SearchCriteria filter) {
+    public List<FlightInformation> searchFlights(SearchFlightCriteria filter) {
         List<FlightInformation> allFlights = FlightsDS.getAllFlights();
         List<FlightInformation> selectedFlights = new ArrayList<FlightInformation>();
 
@@ -31,6 +32,17 @@ public class SearchFlightService {
                 .collect(Collectors.toList());
 
         return selectedFlights;
+    }
+
+    public List<FlightPrice> getPriceForFlights(List<FlightInformation> flights,SearchFlightCriteria searchFlightCriteria){
+        List<FlightPrice> flightPrices = new ArrayList<FlightPrice>();
+        for(FlightInformation flight:flights){
+            double pricePerPassenger = flight.getBasePriceForTravelClass(searchFlightCriteria.getTravelClass());
+            double totalPrice = searchFlightCriteria.getNoOfTravellers()*pricePerPassenger;
+            flightPrices.add(new FlightPrice(pricePerPassenger,totalPrice));
+
+        }
+        return flightPrices;
     }
 
     private Predicate<FlightInformation> matchDepartureDateFilter(LocalDate departureDate) {

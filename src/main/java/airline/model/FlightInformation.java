@@ -66,7 +66,19 @@ public class FlightInformation {
         this.departureDate = departureDate;
     }
 
+    public LocalDate getDepartureDate() {
+        return departureDate;
+    }
+
+    public Airplane getCarrier() {
+        return carrier;
+    }
+
     public boolean travelsOnDate(LocalDate departureDate) {
         return this.departureDate.isEqual(departureDate);
+    }
+
+    public double getBasePriceForTravelClass(TravelClassType travelClass) {
+        return this.carrier.getBasePriceForClass(travelClass);
     }
 }

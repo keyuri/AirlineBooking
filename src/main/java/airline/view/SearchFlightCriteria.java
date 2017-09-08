@@ -1,5 +1,6 @@
-package airline.model;
+package airline.view;
 
+import airline.model.TravelClassType;
 import javafx.util.converter.LocalDateStringConverter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,7 +11,7 @@ import java.time.format.FormatStyle;
 /**
  * Created by Keyuri on 31-08-2017.
  */
-public class SearchCriteria {
+public class SearchFlightCriteria {
 
     private String sourceId;
     private String destinationId;

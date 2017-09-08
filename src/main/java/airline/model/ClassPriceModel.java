@@ -19,4 +19,8 @@ public class ClassPriceModel {
     public int getAvailableSeats() {
         return noOfAvailableSeats;
     }
+
+    public double getBasePrice() {
+        return basePrice;
+    }
 }

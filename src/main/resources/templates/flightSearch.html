@@ -48,25 +48,31 @@ table, th, td {
 
 
 
-    <div th:if="${flights.size()} != 0">
+    <div th:if="${searchResults.size()} != 0">
     <table>
         <caption>Available Flights</caption>
         <tr>
             <td>Flight No</td>
             <td>Source</td>
             <td>Destination</td>
+            <td>Departs On</td>
+            <td>Price/Passenger</td>
+            <td>Total Price</td>
 
         </tr>
-        <th:block th:each="flight : ${flights}">
+        <th:block th:each="result : ${searchResults}">
             <tr>
-                <td th:text="${flight.flightNo}"/>
-                <td th:text="${flight.sourceCityId}"/>
-                <td th:text="${flight.destinationCityId}"/>
+                <td th:text="${result.flight.flightNo}"/>
+                <td th:text="${result.flight.sourceCityId}"/>
+                <td th:text="${result.flight.destinationCityId}"/>
+                <td th:text="${result.flight.departureDate}?${#temporals.format(result.flight.departureDate, 'dd-MMM-yyyy')}:''"></td>
+                <td th:text="${result.flightPrice.pricePerPassenger}"></td>
+                <td th:text="${result.flightPrice.totalPrice}"></td>
             </tr>
         </th:block>
     </table>
     </div>
-    <div th:if="${flights.size()} == 0">
+    <div th:if="${searchResults.size()} == 0">
         <h4 th:text="'Sorry! No flights available for this search criteria.'"/>
     </div>
 
