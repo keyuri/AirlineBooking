@@ -1,20 +1,56 @@
 package airline.model;
 
+import javafx.util.converter.LocalDateStringConverter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 /**
  * Created by Keyuri on 31-08-2017.
  */
 public class SearchCriteria {
 
-    private Location source;
-    private Location destination;
+    private String sourceId;
+    private String destinationId;
     private int noOfTravellers;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate departureDate;
+    private TravelClassType travelClass;
 
-
-    public SearchCriteria() {
-        source = Location.DEFAULT;
-        destination = Location.DEFAULT;
+    public String getSourceId() {
+        return sourceId;
     }
 
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    public String getDestinationId() {
+        return destinationId;
+    }
+
+    public void setDestinationId(String destinationId) {
+        this.destinationId = destinationId;
+    }
+
+    public LocalDate getDepartureDate() {
+        return departureDate;
+    }
+
+
+    public void setDepartureDate(LocalDate departureDate) {
+       this.departureDate = departureDate;
+    }
+
+    public TravelClassType getTravelClass() {
+        return travelClass;
+    }
+
+    public void setTravelClass(TravelClassType travelClass) {
+        this.travelClass = travelClass;
+    }
 
     public int getNoOfTravellers() {
         return noOfTravellers;
@@ -24,21 +60,5 @@ public class SearchCriteria {
         this.noOfTravellers = noOfTravellers;
     }
 
-    public String getSource() {
-        return source.getId();
-    }
 
-
-    public String getDestination() {
-        return destination.getId();
-    }
-
-
-    public void setSource(Location source) {
-        this.source = source;
-    }
-
-    public void setDestination(Location destination) {
-        this.destination = destination;
-    }
 }

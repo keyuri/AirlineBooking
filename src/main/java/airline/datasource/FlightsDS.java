@@ -1,6 +1,5 @@
-package airline;
+package airline.datasource;
 
-import airline.datasource.AirplanesDS;
 import airline.model.Airplane;
 import airline.model.FlightInformation;
 import com.opencsv.CSVReader;
@@ -10,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +30,10 @@ public class FlightsDS {
                 URL url = LocationDS.class.getResource("/flightsDB.csv");
                 CSVReader reader = new CSVReader(new FileReader(url.getFile()));
                 String[] line;
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 while ((line = reader.readNext()) != null) {
                     FlightInformation flight = new FlightInformation(line[0], line[1], line[2]);
-                    flight.setDepartureDate(ZonedDateTime.parse(line[3]).toLocalDate());
+                    flight.setDepartureDate(LocalDate.parse(line[3],dateTimeFormatter));
                     flight.setCarrier(planeList.get((int) reader.getLinesRead() % 3));
                     flightList.add(flight);
                 }

@@ -1,4 +1,3 @@
-import airline.datasource.LocationDS;
 import airline.model.FlightInformation;
 import airline.model.SearchCriteria;
 import airline.services.SearchFlightService;
@@ -12,13 +11,13 @@ import java.util.List;
  */
 public class SearchFlightTest {
     @Test
-    public void testFlightsForSourcetoDestination(){
+    public void testFlightsForSourcetoDestination() {
         SearchFlightService service = new SearchFlightService();
         SearchCriteria filter = new SearchCriteria();
-        filter.setSource(LocationDS.getLocation("DEL"));
-        filter.setDestination(LocationDS.getLocation("BOM"));
+        filter.setSourceId("DEL");
+        filter.setDestinationId("BOM");
         List<FlightInformation> selectedFlights = service.searchFlights(filter);
-        Assert.assertEquals(1,selectedFlights.size());
+        Assert.assertEquals(1, selectedFlights.size());
 
     }
 }

@@ -3,45 +3,43 @@ package airline.controller;
 import airline.datasource.LocationDS;
 import airline.model.FlightInformation;
 import airline.model.SearchCriteria;
+import airline.model.TravelClassType;
 import airline.services.SearchFlightService;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by rajashrk on 8/8/17.
  */
 @Controller
-@SpringBootApplication
 public class FlightController {
 
-     public static void main(String[] args) {
-        SpringApplication.run(FlightController.class, args);
-    }
-
-    /*@RequestMapping("/")
-    public String welcomeMessage() {
-        return "flightSearch";
-    }
-*/
+    @Autowired
+    SearchFlightService searchFlightService;
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String searchFlights(@ModelAttribute("searchCriteria") SearchCriteria searchCriteria, Model model) {
-        List<FlightInformation> flights = new SearchFlightService().searchFlights(searchCriteria);
+        List<FlightInformation> flights = searchFlightService.searchFlights(searchCriteria);
+        model.addAttribute("searchCriteria", new SearchCriteria());
+        model.addAttribute("cityList", LocationDS.getLocations());
+        model.addAttribute("travelClassTypes", TravelClassType.values());
         model.addAttribute("flights", flights);
-        return "flightList";
+        return "flightSearch";
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = {"/","/search"}, method = RequestMethod.GET)
     public String getLocations(Model model) {
         model.addAttribute("cityList", LocationDS.getLocations());
+        model.addAttribute("travelClassTypes", TravelClassType.values());
         model.addAttribute("searchCriteria", new SearchCriteria());
+        model.addAttribute("flights",new ArrayList<>());
         return "flightSearch";
     }
 }

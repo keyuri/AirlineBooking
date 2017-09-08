@@ -1,5 +1,7 @@
 package airline.model;
 
+import java.time.LocalDate;
+
 /**
  * Created by Keyuri on 30-08-2017.
  */
@@ -8,27 +10,40 @@ public class FlightInformation {
     private String flightNo;
     private String sourceCityId;
     private String destinationCityId;
-    private int noOfAvailableSeats;
+    private LocalDate departureDate;
     private Airplane carrier;
 
-    public FlightInformation(String flightNo, String sourceCityId, String destinationCityId, Airplane carrier) {
+    public FlightInformation(String flightNo,
+                             String sourceCityId,
+                             String destinationCityId){
         this.flightNo = flightNo;
         this.sourceCityId = sourceCityId;
         this.destinationCityId = destinationCityId;
+    }
+
+
+    public FlightInformation(String flightNo,
+                             String sourceCityId,
+                             String destinationCityId,
+                             LocalDate departureDate,
+                             Airplane carrier) {
+        this.flightNo = flightNo;
+        this.sourceCityId = sourceCityId;
+        this.destinationCityId = destinationCityId;
+        this.departureDate = departureDate;
         this.carrier = carrier;
-        noOfAvailableSeats = this.carrier.getTotalNoOfSeats();
     }
 
-    public FlightInformation(String flightNo, String sourceCityId, String destinationCityId) {
-        this.flightNo = flightNo;
-        this.sourceCityId = sourceCityId;
-        this.destinationCityId = destinationCityId;
+    public boolean startsAtSource(String sourceId) {
+        return this.sourceCityId.equalsIgnoreCase(sourceId);
     }
 
-    public boolean areSeatsAvailable(int noOfRequestedSeats){
+    public boolean travelsToDestination(String destinationId) {
+        return this.destinationCityId.equalsIgnoreCase(destinationId);
+    }
 
-        return (noOfRequestedSeats <= noOfAvailableSeats)? true:false;
-
+    public boolean areSeatsAvailable(TravelClassType travelClass, int noOfRequestedSeats) {
+        return carrier.areSeatsAvailable(travelClass, noOfRequestedSeats);
     }
 
     public String getFlightNo() {
@@ -45,6 +60,13 @@ public class FlightInformation {
 
     public void setCarrier(Airplane airplane) {
         this.carrier = airplane;
-        this.noOfAvailableSeats = this.carrier.getTotalNoOfSeats();
+    }
+
+    public void setDepartureDate(LocalDate departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public boolean travelsOnDate(LocalDate departureDate) {
+        return this.departureDate.isEqual(departureDate);
     }
 }

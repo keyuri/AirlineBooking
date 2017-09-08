@@ -3,31 +3,73 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-</head>
+    <style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+    <link rel="stylesheet" href="https://css.skyscnr.com/flightsearch/static/searchcontrols-refresh-dp.min.b987217ba86f22addf72.css"/></head>
 <body>
-<p th:text="'Welcome to TWAirline'"/>
+
+    <p th:text="'Welcome to TWAirline'"/>
 
 <form th:action="@{/search}" th:object="${searchCriteria}" method="post">
 
     <p th:text="'Source'"></p>
-    <select th:field="*{sourceCityId}" name="sourceCityId" id="sourceCityId">
+    <select th:field="*{sourceId}" name="sourceCityId" id="sourceCityId">
         <!-- <option value="DEFAULT">Select Source</option>-->
         <option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name}"/>
     </select>
 
 
     <p th:text="'Destination'"></p>
-    <select th:field="*{destCityId}" name="destCityId" id="destCityId">
+    <select th:field="*{destinationId}" name="destCityId" id="destCityId">
         <!-- <option value="DEFAULT">Select Destination</option>-->
         <option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name}"/>
     </select>
 
     <p th:text="'No Of Travellers'"></p>
-    <input th:field="*{noOfTravellers}" type="number" min="1" />
+    <input th:field="*{noOfTravellers}" type="number" min="1" required="required"/>
+
+    <p th:text="'Travel Date'"></p>
+    <input type="date" th:field="*{departureDate}"/>
+
+    <p th:text="'Travel Class'"></p>
+    <select th:field="*{travelClass}" name="travelClass" id="travelClass" required="required">
+         <option value="">Select Class</option>
+        <option th:each="classType : ${travelClassTypes}" th:value="${classType}" th:text="${classType}"/>
+    </select>
 
 
     <input type="submit" value="Search"/>
 </form>
+
+
+
+
+
+    <div th:if="${flights.size()} != 0">
+    <table>
+        <caption>Available Flights</caption>
+        <tr>
+            <td>Flight No</td>
+            <td>Source</td>
+            <td>Destination</td>
+
+        </tr>
+        <th:block th:each="flight : ${flights}">
+            <tr>
+                <td th:text="${flight.flightNo}"/>
+                <td th:text="${flight.sourceCityId}"/>
+                <td th:text="${flight.destinationCityId}"/>
+            </tr>
+        </th:block>
+    </table>
+    </div>
+    <div th:if="${flights.size()} == 0">
+        <h4 th:text="'Sorry! No flights available for this search criteria.'"/>
+    </div>
+
 
 </body>
 </html>
