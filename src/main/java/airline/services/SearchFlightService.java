@@ -2,7 +2,7 @@ package airline.services;
 
 import airline.StringUtils;
 import airline.datasource.FlightsDS;
-import airline.model.FlightInformation;
+import airline.model.Flight;
 import airline.model.TravelClassType;
 import airline.view.FlightPrice;
 import airline.view.SearchFlightCriteria;
@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class SearchFlightService {
 
-    public List<FlightInformation> searchFlights(SearchFlightCriteria filter) {
-        List<FlightInformation> allFlights = FlightsDS.getAllFlights();
-        List<FlightInformation> selectedFlights = new ArrayList<FlightInformation>();
+    public List<Flight> searchFlights(SearchFlightCriteria filter) {
+        List<Flight> allFlights = FlightsDS.getAllFlights();
+        List<Flight> selectedFlights = new ArrayList<Flight>();
 
         selectedFlights = allFlights.stream()
                 .filter(matchSourcefilter(filter.getSourceId()))
@@ -34,9 +34,9 @@ public class SearchFlightService {
         return selectedFlights;
     }
 
-    public List<FlightPrice> getPriceForFlights(List<FlightInformation> flights,SearchFlightCriteria searchFlightCriteria){
+    public List<FlightPrice> getPriceForFlights(List<Flight> flights, SearchFlightCriteria searchFlightCriteria){
         List<FlightPrice> flightPrices = new ArrayList<FlightPrice>();
-        for(FlightInformation flight:flights){
+        for(Flight flight:flights){
             double pricePerPassenger = flight.getBasePriceForTravelClass(searchFlightCriteria.getTravelClass());
             double totalPrice = searchFlightCriteria.getNoOfTravellers()*pricePerPassenger;
             flightPrices.add(new FlightPrice(pricePerPassenger,totalPrice));
@@ -45,19 +45,19 @@ public class SearchFlightService {
         return flightPrices;
     }
 
-    private Predicate<FlightInformation> matchDepartureDateFilter(LocalDate departureDate) {
+    private Predicate<Flight> matchDepartureDateFilter(LocalDate departureDate) {
         return flightInformation -> (departureDate == null) ||  flightInformation.travelsOnDate(departureDate);
     }
 
-    private Predicate<FlightInformation> matchSeatsFilter(TravelClassType travelClass, int noOfTravellers) {
+    private Predicate<Flight> matchSeatsFilter(TravelClassType travelClass, int noOfTravellers) {
         return flightInformation -> travelClass == null || flightInformation.areSeatsAvailable(travelClass,noOfTravellers);
     }
 
-    private Predicate<FlightInformation> matchDestinationFilter(final String destinationId) {
+    private Predicate<Flight> matchDestinationFilter(final String destinationId) {
         return flightInformation -> StringUtils.isEmptyOrNull(destinationId) || flightInformation.travelsToDestination(destinationId);
     }
 
-    private Predicate<FlightInformation> matchSourcefilter(final String sourceId) {
+    private Predicate<Flight> matchSourcefilter(final String sourceId) {
         return flight -> StringUtils.isEmptyOrNull(sourceId) || flight.startsAtSource(sourceId);
     }
 }

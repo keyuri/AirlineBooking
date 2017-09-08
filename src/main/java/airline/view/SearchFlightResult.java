@@ -1,20 +1,20 @@
 package airline.view;
 
-import airline.model.FlightInformation;
+import airline.model.Flight;
 
 /**
  * Created by Keyuri on 09-09-2017.
  */
 public class SearchFlightResult {
-    private FlightInformation flight;
+    private Flight flight;
     private FlightPrice flightPrice;
 
-    public SearchFlightResult(FlightInformation availableFlight, FlightPrice flightPrice) {
+    public SearchFlightResult(Flight availableFlight, FlightPrice flightPrice) {
         this.flight = availableFlight;
         this.flightPrice = flightPrice;
     }
 
-    public FlightInformation getFlight() {
+    public Flight getFlight() {
         return flight;
     }
 

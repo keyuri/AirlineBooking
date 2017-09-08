@@ -1,7 +1,7 @@
 package airline.controller;
 
 import airline.datasource.LocationDS;
-import airline.model.FlightInformation;
+import airline.model.Flight;
 import airline.view.FlightPrice;
 import airline.view.SearchFlightCriteria;
 import airline.model.TravelClassType;
@@ -28,7 +28,7 @@ public class FlightController {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String searchFlights(@ModelAttribute("searchCriteria") SearchFlightCriteria searchCriteria, Model model) {
-        List<FlightInformation> flights = searchFlightService.searchFlights(searchCriteria);
+        List<Flight> flights = searchFlightService.searchFlights(searchCriteria);
         List<FlightPrice> flightPrices = searchFlightService.getPriceForFlights(flights,searchCriteria);
         List<SearchFlightResult> searchResults = new ArrayList<>();
         for (int counter = 0; counter < flights.size(); counter++) {
@@ -41,6 +41,11 @@ public class FlightController {
         model.addAttribute("cityList", LocationDS.getLocations());
         model.addAttribute("travelClassTypes", TravelClassType.values());
         model.addAttribute("searchResults",searchResults);
+        if(searchResults.size() > 0)
+            model.addAttribute("gotresults", true);
+        else
+            model.addAttribute("gotresults", false);
+
         return "flightSearch";
     }
 
@@ -49,7 +54,7 @@ public class FlightController {
         model.addAttribute("cityList", LocationDS.getLocations());
         model.addAttribute("travelClassTypes", TravelClassType.values());
         model.addAttribute("searchCriteria", new SearchFlightCriteria());
-        model.addAttribute("searchResults",new ArrayList<>());
+        //model.addAttribute("searchResults",new ArrayList<>());
         return "flightSearch";
     }
 }

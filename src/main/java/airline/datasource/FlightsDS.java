@@ -1,7 +1,7 @@
 package airline.datasource;
 
 import airline.model.Airplane;
-import airline.model.FlightInformation;
+import airline.model.Flight;
 import com.opencsv.CSVReader;
 
 import java.io.FileReader;
@@ -18,12 +18,12 @@ import java.util.List;
  */
 public class FlightsDS {
 
-    private static List<FlightInformation> flightList = null;
+    private static List<Flight> flightList = null;
 
-    public static List<FlightInformation> getAllFlights() {
+    public static List<Flight> getAllFlights() {
 
         if (flightList == null) {
-            flightList = new ArrayList<FlightInformation>();
+            flightList = new ArrayList<Flight>();
 
             List<Airplane> planeList = AirplanesDS.getAllPlanes();
             try {
@@ -32,7 +32,7 @@ public class FlightsDS {
                 String[] line;
                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 while ((line = reader.readNext()) != null) {
-                    FlightInformation flight = new FlightInformation(line[0], line[1], line[2]);
+                    Flight flight = new Flight(line[0], line[1], line[2]);
                     flight.setDepartureDate(LocalDate.parse(line[3],dateTimeFormatter));
                     flight.setCarrier(planeList.get((int) reader.getLinesRead() % 3));
                     flightList.add(flight);
@@ -45,21 +45,21 @@ public class FlightsDS {
         return flightList;
     }
 
-    private static void generateDummyData(List<FlightInformation> flightList) {
+    private static void generateDummyData(List<Flight> flightList) {
         List<Airplane> planeList = AirplanesDS.getAllPlanes();
         LocalDate deptDate = ZonedDateTime.parse("09-09-2017").toLocalDate();
-        flightList.add(new FlightInformation("AI0010", "DEL", "BOM",deptDate, planeList.get(0)));
-        flightList.add(new FlightInformation("BA1123", "HYD", "PUN", deptDate,planeList.get(1)));
-        flightList.add(new FlightInformation("AI0030", "HYD", "BLR",deptDate, planeList.get(2)));
-        flightList.add(new FlightInformation("AI0031", "HYD", "BOM",deptDate, planeList.get(0)));
-        flightList.add(new FlightInformation("AI0032", "HYD", "DEL",deptDate, planeList.get(1)));
-        flightList.add(new FlightInformation("AI0040", "BLR", "HYD",deptDate, planeList.get(2)));
-        flightList.add(new FlightInformation("AI0042", "BLR", "PUN",deptDate, planeList.get(0)));
-        flightList.add(new FlightInformation("AI0045", "BLR", "DEL",deptDate, planeList.get(0)));
-        flightList.add(new FlightInformation("AI0046", "BLR", "BOM",deptDate, planeList.get(1)));
-        flightList.add(new FlightInformation("AI0050", "PUN", "BOM",deptDate, planeList.get(2)));
-        flightList.add(new FlightInformation("AI0052", "PUN", "BLR",deptDate, planeList.get(1)));
-        flightList.add(new FlightInformation("AI0060", "DEL", "BOM",deptDate, planeList.get(0)));
+        flightList.add(new Flight("AI0010", "DEL", "BOM",deptDate, planeList.get(0)));
+        flightList.add(new Flight("BA1123", "HYD", "PUN", deptDate,planeList.get(1)));
+        flightList.add(new Flight("AI0030", "HYD", "BLR",deptDate, planeList.get(2)));
+        flightList.add(new Flight("AI0031", "HYD", "BOM",deptDate, planeList.get(0)));
+        flightList.add(new Flight("AI0032", "HYD", "DEL",deptDate, planeList.get(1)));
+        flightList.add(new Flight("AI0040", "BLR", "HYD",deptDate, planeList.get(2)));
+        flightList.add(new Flight("AI0042", "BLR", "PUN",deptDate, planeList.get(0)));
+        flightList.add(new Flight("AI0045", "BLR", "DEL",deptDate, planeList.get(0)));
+        flightList.add(new Flight("AI0046", "BLR", "BOM",deptDate, planeList.get(1)));
+        flightList.add(new Flight("AI0050", "PUN", "BOM",deptDate, planeList.get(2)));
+        flightList.add(new Flight("AI0052", "PUN", "BLR",deptDate, planeList.get(1)));
+        flightList.add(new Flight("AI0060", "DEL", "BOM",deptDate, planeList.get(0)));
     }
 
 }

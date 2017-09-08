@@ -6,27 +6,27 @@ import java.time.LocalDate;
  * Created by Keyuri on 30-08-2017.
  */
 
-public class FlightInformation {
+public class Flight {
     private String flightNo;
     private String sourceCityId;
     private String destinationCityId;
     private LocalDate departureDate;
     private Airplane carrier;
 
-    public FlightInformation(String flightNo,
-                             String sourceCityId,
-                             String destinationCityId){
+    public Flight(String flightNo,
+                  String sourceCityId,
+                  String destinationCityId){
         this.flightNo = flightNo;
         this.sourceCityId = sourceCityId;
         this.destinationCityId = destinationCityId;
     }
 
 
-    public FlightInformation(String flightNo,
-                             String sourceCityId,
-                             String destinationCityId,
-                             LocalDate departureDate,
-                             Airplane carrier) {
+    public Flight(String flightNo,
+                  String sourceCityId,
+                  String destinationCityId,
+                  LocalDate departureDate,
+                  Airplane carrier) {
         this.flightNo = flightNo;
         this.sourceCityId = sourceCityId;
         this.destinationCityId = destinationCityId;

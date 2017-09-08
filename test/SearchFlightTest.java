@@ -1,4 +1,4 @@
-import airline.model.FlightInformation;
+import airline.model.Flight;
 import airline.view.SearchFlightCriteria;
 import airline.services.SearchFlightService;
 import org.junit.Assert;
@@ -16,7 +16,7 @@ public class SearchFlightTest {
         SearchFlightCriteria filter = new SearchFlightCriteria();
         filter.setSourceId("DEL");
         filter.setDestinationId("BOM");
-        List<FlightInformation> selectedFlights = service.searchFlights(filter);
+        List<Flight> selectedFlights = service.searchFlights(filter);
         Assert.assertEquals(1, selectedFlights.size());
 
     }
