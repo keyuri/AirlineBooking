@@ -1,4 +1,4 @@
-package airline.datasource;
+package airline;
 
 import airline.model.Location;
 
