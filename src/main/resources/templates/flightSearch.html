@@ -3,79 +3,90 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <style>
-table, th, td {
-    border: 1px solid black;
-}
-</style>
-    <link rel="stylesheet" href="https://css.skyscnr.com/flightsearch/static/searchcontrols-refresh-dp.min.b987217ba86f22addf72.css"/></head>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous"/>
+</head>
 <body>
-
-    <p th:text="'Welcome to TWAirline'"/>
-
-<form th:action="@{/search}" th:object="${searchCriteria}" method="post">
-
-    <p th:text="'Source'"></p>
-    <select th:field="*{sourceId}" name="sourceCityId" id="sourceCityId">
-        <!-- <option value="DEFAULT">Select Source</option>-->
-        <option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name}"/>
-    </select>
-
-
-    <p th:text="'Destination'"></p>
-    <select th:field="*{destinationId}" name="destCityId" id="destCityId">
-        <!-- <option value="DEFAULT">Select Destination</option>-->
-        <option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name}"/>
-    </select>
-
-    <p th:text="'No Of Travellers'"></p>
-    <input th:field="*{noOfTravellers}" type="number" min="1" required="required"/>
-
-    <p th:text="'Travel Date'"></p>
-    <input type="date" th:field="*{departureDate}"/>
-
-    <p th:text="'Travel Class'"></p>
-    <select th:field="*{travelClass}" name="travelClass" id="travelClass" required="required">
-         <option value="">Select Class</option>
-        <option th:each="classType : ${travelClassTypes}" th:value="${classType}" th:text="${classType}"/>
-    </select>
-
-
-    <input type="submit" value="Search"/>
-</form>
-
-
-
-
-
-    <div th:if="${gotresults} == true">
-    <table>
-        <caption>Available Flights</caption>
-        <tr>
-            <td>Flight No</td>
-            <td>Source</td>
-            <td>Destination</td>
-            <td>Departs On</td>
-            <td>Price/Passenger</td>
-            <td>Total Price</td>
-
-        </tr>
-        <th:block th:each="result : ${searchResults}">
+        <h3 align="center">Welcome to Vapasi Airlines</h3>
+        <table  class="pure-table">
             <tr>
-                <td th:text="${result.flight.flightNo}"/>
-                <td th:text="${result.flight.sourceCityId}"/>
-                <td th:text="${result.flight.destinationCityId}"/>
-                <td th:text="${result.flight.departureDate}?${#temporals.format(result.flight.departureDate, 'dd-MMM-yyyy')}:''"></td>
-                <td th:text="${result.flightPrice.pricePerPassenger}"></td>
-                <td th:text="${result.flightPrice.totalPrice}"></td>
+                <td width="30%">
+        <form class="pure-form pure-form-aligned" th:action="@{/search}" th:object="${searchCriteria}" method="post">
+            <fieldset>
+                <div class="pure-control-group">
+                    <label for="sourceCityId">From</label>
+                    <select th:field="*{sourceId}" name="sourceCityId" id="sourceCityId">
+                        <!-- <option value="DEFAULT">Select Source</option>-->
+                        <option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name+'(' + city.id + ')'}"/>
+                    </select>
+                </div>
+                <div class="pure-control-group">
+                    <label for="destCityId">To</label>
+                    <select th:field="*{destinationId}" name="destCityId" id="destCityId">
+                        <!-- <option value="DEFAULT">Select Destination</option>-->
+                        <option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name+'(' + city.id + ')'}"/>
+                    </select>
+                </div>
+
+                <div class="pure-control-group">
+                    <label for="deptDate">Travels On</label>
+                    <input id="deptDate" type="date" th:field="*{departureDate}" placeholder="Enter travel date"/>
+                </div>
+
+                <div class="pure-control-group">
+                    <label for="noOfPax">No Of Passengers</label>
+                    <input id="noOfPax" th:field="*{noOfTravellers}" value="1" type="number" min="1" required="required" placeholder="Passengers"/>
+                </div>
+
+
+                <div class="pure-control-group">
+                    <label for="travelClass">Class</label>
+                    <select th:field="*{travelClass}" name="travelClass" id="travelClass" required="required">
+                        <option value="">Select Class</option>
+                        <option th:each="classType : ${travelClassTypes}" th:value="${classType}"
+                                th:text="${classType}"/>
+                    </select>
+                </div>
+
+                <div class="pure-controls">
+                    <button type="submit" class="pure-button pure-button-primary">Search Flights</button>
+                </div>
+                </fieldset>
+
+           </form>
+                </td>
+
+                <td width = "50%" align="center" style="vertical-align:top">
+                    <div th:if="${gotresults} == true">
+                        <table class="pure-table pure-table-horizontal pure-table-striped">
+
+                            <thead>
+                            <caption><strong>Available Flights</strong></caption>
+                            <tr>
+                                <th>Flight No</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Departs On</th>
+                                <th>Price/Pax</th>
+                                <th>Total Price</th>
+                            </tr>
+                            </thead>
+                            <th:block th:each="result : ${searchResults}">
+                                <tr>
+                                    <td th:text="${result.flight.flightNo}"/>
+                                    <td th:text="${T(airline.datasource.LocationDS).getLocation(result.flight.sourceCityId).getName()}"/>
+                                    <td th:text="${T(airline.datasource.LocationDS).getLocation(result.flight.destinationCityId).getName()}"/>
+                                    <td th:text="${result.flight.departureDate}?${#temporals.format(result.flight.departureDate, 'dd-MMM-yyyy')}:''"></td>
+                                    <td th:text="${result.flightPrice.pricePerPassenger}"></td>
+                                    <td th:text="${result.flightPrice.totalPrice}"></td>
+                                </tr>
+                            </th:block>
+                        </table>
+                    </div>
+                    <div th:if="${gotresults} == false">
+                        <h4 th:text="'Sorry! No flights available for this search criteria.'"/>
+                    </div>
+                </td>
             </tr>
-        </th:block>
-    </table>
-    </div>
-    <div th:if="${gotresults} == false">
-        <h4 th:text="'Sorry! No flights available for this search criteria.'"/>
-    </div>
-
-
+        </table>
 </body>
 </html>

@@ -36,7 +36,6 @@ public class LocationDS {
         return locationList;
     }
 
-
     public static Location getLocation(String cityId) {
             if(locationList == null)
                 getLocations();

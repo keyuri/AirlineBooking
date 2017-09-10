@@ -15,7 +15,7 @@ public class SearchFlightCriteria {
 
     private String sourceId;
     private String destinationId;
-    private int noOfTravellers;
+    private int noOfTravellers = 1;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate departureDate;
     private TravelClassType travelClass;
